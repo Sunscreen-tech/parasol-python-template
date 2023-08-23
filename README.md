@@ -39,9 +39,9 @@ Once you have your contract written under the 'contracts' directory, here are th
 
 ## Interacting As Owner
 ##### Adding a new person to allow voting
-Execute 'python execute.py <testnet/local> allow_account_to_vote --abi_json **Path to ABI JSON** --account_id **Account to allow to vote**'
+Execute 'python execute.py <testnet/local> allow_account_to_vote --abi_json **Path to ABI JSON (contract.json)** --account_id **Account to allow to vote**'
 ##### Getting Final Vote Tally
-Execute 'python execute.py <testnet/local> get_results --abi_json **Path to ABI JSON**'
+Execute 'python execute.py <testnet/local> get_results --abi_json **Path to ABI JSON (contract.json)**'
 
 
 ## Interacting as Client
@@ -54,7 +54,7 @@ Execute 'python client.py testnet create_account'
 Copy over the contract.json from the contract folder into this folder
 
 ##### To Vote
-Execute 'python client.py <testnet/local> vote --abi_json **Path to ABI JSON**'
+Execute 'python client.py <testnet/local> vote --abi_json **Path to ABI JSON (contract.json)**'
 
 ##### To Delegate your vote
-Execute 'python client.py <testnet/local> delegate --abi_json **Path to ABI JSON** --account_id **Account to delegate to**'
+Execute 'python client.py <testnet/local> delegate --abi_json **Path to ABI JSON (contract.json)** --account_id **Account to delegate to**'
