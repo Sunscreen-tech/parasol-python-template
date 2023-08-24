@@ -34,17 +34,19 @@ contract Ballot {
      * @dev Create a new ballot to choose one of 'proposalNames'.
      * @param proposalNames names of proposals
      */
-    constructor(
-        string memory ballot,
-        string[] memory proposalNames
-    ) {
+    constructor(string memory ballot, string[] memory proposalNames) {
         chairperson = msg.sender;
         voters[chairperson].weight = 1;
-        publicKey = FHE.getNetworkPublicKey();
+        publicKey = FHE.networkPublicKey();
         ballotName = ballot;
 
         for (uint i = 0; i < proposalNames.length; i++) {
-            proposals.push(Proposal({name: proposalNames[i], voteCount: ""}));
+            proposals.push(
+                Proposal({
+                    name: proposalNames[i],
+                    voteCount: FHE.encryptUint256(0)
+                })
+            );
         }
     }
 
@@ -123,13 +125,26 @@ contract Ballot {
      * @dev Returns all the proposals to decrypt
      * @return proposals_ the proposals array
      */
-    function getProposalTallys() public view returns (Proposal[] memory) {
+    function getProposalTallys(
+        bytes calldata reencPublicKey
+    ) public view returns (Proposal[] memory) {
         require(
             msg.sender == chairperson,
             "Only chairperson can get the tallys."
         );
 
-        return proposals;
+        Proposal[] memory reEncProposals = new Proposal[](proposals.length);
+        for (uint i = 0; i < proposals.length; i++) {
+            reEncProposals[i] = Proposal({
+                name: proposals[i].name,
+                voteCount: FHE.reencryptUint256(
+                    reencPublicKey,
+                    proposals[i].voteCount
+                )
+            });
+        }
+
+        return reEncProposals;
     }
 
     function getPublicKey() public view returns (bytes memory) {
