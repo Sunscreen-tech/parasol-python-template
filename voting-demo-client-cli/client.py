@@ -1,6 +1,5 @@
 import click
 from web3 import Web3
-from sunscreen_web3.web3 import SunscreenLocalConfig, SunscreenRemoteConfig
 from sunscreen_web3.web3 import (
     initialize_web3,
     load_or_create_account,
@@ -89,16 +88,15 @@ def vote(abi_json):
 
     print("Getting public key...")
     public_key_bytes = contract.functions.getPublicKey().call()
-    public_key = public_key_bytes.decode("utf-8")
-    key_set = KeySet.initialize_from_string(public_key)
-    context = SunscreenFHEContext.create_from_com(1056)
+    key_set = KeySet.initialize_from_bytes_with_public_key(bytearray(public_key_bytes))
+    context = SunscreenFHEContext.create_from_params_as_specified(4096, 4096)
 
     print("Encrypting responses...")
     encrypted_votes = [
         EncryptedUnsigned64.create_from_plain(x, context, key_set) for x in votes
     ]
     print("Sending response to contract")
-    encrypted_votes = [Web3.to_bytes(text=x) for x in encrypted_votes]
+    encrypted_votes = [bytes(x.get_bytes()) for x in encrypted_votes]
 
     nonce = w3.eth.get_transaction_count(account["address"])
     txn = contract.functions.vote(encrypted_votes).build_transaction(

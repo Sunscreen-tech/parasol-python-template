@@ -31,7 +31,7 @@ Once you have your contract written under the 'contracts' directory, here are th
 ##### To Anvil (local network)
 1. Install all requirements by invoking 'pip install -r requirements.txt'
 2. Edit config.py updated to your contract information
-3. Execute 'python execute.py local set_account --address **Account Address** --private_key **Account Private Key**'
+3. Execute 'python execute.py local set-account **Account Address** **Account Private Key**'
 4. Execute 'python execute.py local deploy'
 5. The prompt will request you to fund the account (with instructions on how)
 6. You are done!
@@ -39,22 +39,25 @@ Once you have your contract written under the 'contracts' directory, here are th
 
 ## Interacting As Owner
 ##### Adding a new person to allow voting
-Execute 'python execute.py <testnet/local> allow_account_to_vote --abi_json **Path to ABI JSON (contract.json)** --account_id **Account to allow to vote**'
+Execute 'python execute.py <testnet/local> allow-account-to-vote **Path to ABI JSON (contract.json)**  **Account to allow to vote**'
 ##### Getting Final Vote Tally
-Execute 'python execute.py <testnet/local> get_results --abi_json **Path to ABI JSON (contract.json)**'
+Execute 'python execute.py <testnet/local> get-results **Path to ABI JSON (contract.json)**'
 
 
 ## Interacting as Client
 The CLI is configured under voting-demo-client-cli/python. <br/>
 Execute 'pip install -r requirements.txt'
 #### Configuring your account (Only for Testnets)
-Execute 'python client.py testnet create_account'
+Execute 'python client.py testnet create-account'
+#### Configuring your account (For Anvil)
+Execute 'python client.py local set-account **Account Address** **Account Private Key**'
+
 
 #### Configuring the ABI
 Copy over the contract.json from the contract folder into this folder
 
 ##### To Vote
-Execute 'python client.py <testnet/local> vote --abi_json **Path to ABI JSON (contract.json)**'
+Execute 'python client.py <testnet/local> vote  **Path to ABI JSON (contract.json)**'
 
 ##### To Delegate your vote
-Execute 'python client.py <testnet/local> delegate --abi_json **Path to ABI JSON (contract.json)** --account_id **Account to delegate to**'
+Execute 'python client.py <testnet/local> delegate  **Path to ABI JSON (contract.json)** **Account to delegate to**'

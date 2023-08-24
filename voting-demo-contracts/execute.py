@@ -1,5 +1,8 @@
 import click
 from web3 import Web3
+from sunscreen_web3.encryption import (
+    SunscreenFHEContext
+)
 from sunscreen_web3.web3 import (
     initialize_web3,
     load_or_create_account,
@@ -46,7 +49,7 @@ def set_account(address, private_key):
 def create_account():
     global config
     global w3
-    account = load_or_create_account(w3)
+    account = load_or_create_account(w3, config)
 
     print("Your Account: " + account["address"])
 
@@ -55,7 +58,7 @@ def create_account():
 def deploy():
     global config
     global w3
-    account = load_or_create_account(w3)
+    account = load_or_create_account(w3, config)
 
     print("Your Account: " + account["address"])
     print(
@@ -120,7 +123,7 @@ def allow_account_to_vote(abi_json, account_id):
     input()
 
     print("Loading contract from contract.json ...")
-    contract = load_contract_abi_from_file(w3, config, abi_json)
+    contract = load_contract_abi_from_file(w3, abi_json)
 
     nonce = w3.eth.get_transaction_count(account["address"])
     txn = contract.functions.giveRightToVote(account_id).build_transaction(
@@ -150,8 +153,27 @@ def get_results(abi_json):
     print("Your Account: " + account["address"])
 
     print("Loading contract from contract.json ...")
-    contract = load_contract_abi_from_file(w3, config, abi_json)
-    proposal_tallys = contract.functions.getProposalTallys().call()
+    contract = load_contract_abi_from_file(w3, abi_json)
+    sunscreen_context = SunscreenFHEContext.create_from_params_as_specified(4096, 4096)
+    keys = sunscreen_context.generate_keys()
+    public_key = keys.get_public_key_as_bytes()
+    #public_key_bytes = Web3.to_bytes(text=public_key)
+
+    nonce = w3.eth.get_transaction_count(account["address"])
+    txn = contract.functions.getProposalTallys(bytes(public_key)).build_transaction(
+        {
+            "chainId": config["chain_id"],
+            "gasPrice": w3.eth.gas_price,
+            "from": account["address"],
+            "nonce": nonce,
+        }
+    )
+    signed_txn = w3.eth.account.sign_transaction(
+        txn, private_key=account["private_key"]
+    )
+    tx_hash = w3.eth.send_raw_transaction(signed_txn.rawTransaction)
+    print("Executing transaction...")
+    tx_receipt = w3.eth.wait_for_transaction_receipt(tx_hash)
 
 
 if __name__ == "__main__":
