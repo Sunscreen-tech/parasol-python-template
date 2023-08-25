@@ -6,7 +6,7 @@ from sunscreen_web3.web3 import (
     load_contract_abi_from_file,
     set_account_config,
 )
-from sunscreen_web3.encryption import SunscreenFHEContext, KeySet, EncryptedUnsigned64
+from sunscreen_web3.encryption import SunscreenFHEContext, KeySet, EncryptedUnsigned256
 from config import Networks
 
 __author__ = "Sunscreen Tech"
@@ -16,7 +16,7 @@ w3 = None
 
 
 @click.group()
-@click.argument("network")
+@click.option("--network")
 def main(network):
     """
     Simple CLI for Ballots
@@ -29,8 +29,8 @@ def main(network):
 
 
 @main.command
-@click.argument("address")
-@click.argument("private_key")
+@click.option("--address")
+@click.option("--private_key")
 def set_account(address, private_key):
     global config
     global w3
@@ -41,13 +41,16 @@ def set_account(address, private_key):
 def create_account():
     global config
     global w3
+    if 'localhost' in config['rpc_endpoint'] or '127.0.0.1' in config['rpc_endpoint']:
+        print("Can't create account for local networks. Please use other ways.")
+        return
     account = load_or_create_account(w3, config)
 
     print("Your Account: " + account["address"])
 
 
 @main.command()
-@click.argument("abi_json")
+@click.option("--abi_json", default="../voting-demo-contracts/contract.json")
 def vote(abi_json):
     global config
     global w3
@@ -93,10 +96,11 @@ def vote(abi_json):
 
     print("Encrypting responses...")
     encrypted_votes = [
-        EncryptedUnsigned64.create_from_plain(x, context, key_set) for x in votes
+        EncryptedUnsigned256.create_from_plain(x, context, key_set) for x in votes
     ]
     print("Sending response to contract")
     encrypted_votes = [bytes(x.get_bytes()) for x in encrypted_votes]
+    print(len(encrypted_votes[0]))
 
     nonce = w3.eth.get_transaction_count(account["address"])
     txn = contract.functions.vote(encrypted_votes).build_transaction(
@@ -118,8 +122,8 @@ def vote(abi_json):
 
 
 @main.command()
-@click.argument("account_id")
-@click.argument("abi_json")
+@click.option("--account_id")
+@click.option("--abi_json", default="../voting-demo-contracts/contract.json")
 def delegate(account_id, abi_json):
     global config
     global w3

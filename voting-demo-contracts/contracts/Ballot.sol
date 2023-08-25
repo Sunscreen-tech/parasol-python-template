@@ -10,7 +10,7 @@ import "./libs/FHE.sol";
  */
 contract Ballot {
     struct Voter {
-        uint64 weight; // weight is accumulated by delegation
+        uint256 weight; // weight is accumulated by delegation
         bool voted; // if true, that person already voted
         address delegate; // person delegated to
         bytes[] votes; // index of the voted proposal
@@ -91,13 +91,14 @@ contract Ballot {
         }
     }
 
-    function addWeightForVotes(Voter memory voter, uint64 weight) private {
+    function addWeightForVotes(Voter memory voter, uint256 weight) private {
         for (uint i = 0; i < proposals.length; i++) {
-            proposals[i].voteCount = FHE.addUint64EncEnc(
+            proposals[i].voteCount = FHE.multiplyUint256EncPlain(publicKey, voter.votes[i], weight);/* FHE.addUint256EncEnc(
                 publicKey,
                 proposals[i].voteCount,
-                FHE.multiplyUint64EncPlain(publicKey, voter.votes[i], weight)
-            );
+                voter.votes[i]
+                //
+            ); */
         }
     }
 
