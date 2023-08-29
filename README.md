@@ -15,7 +15,7 @@ The test network is deployed and available at: https://rpc.sunscreen.tech/paraso
 3. Execute `cargo install --path ./anvil --bins --locked --force`
 4. Execute `anvil`
 5. Your network is ready! You will have 10 accounts and 10 private keys available for use.
-6. If you didn't change any defaults, your network should be available at [http://127.0.0.1:8545] with Chain ID 31337.
+6. If you didn't change any defaults, your network should be available at http://127.0.0.1:8545 with Chain ID 31337.
 7. You are done!
 
 ## Deploying A Contract
