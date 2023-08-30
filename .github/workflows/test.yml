@@ -30,5 +30,5 @@ jobs:
 
       - name: Run Forge tests
         run: |
-          forge test -vvv
+          forge test -vvv --root voting-demo-contracts
         id: test
