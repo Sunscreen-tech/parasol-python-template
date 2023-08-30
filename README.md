@@ -1,4 +1,5 @@
-# Intro
+# Parasol Python Monorepo Template
+![Solidity](https://github.com/Sunscreen-tech/hackathon-python/workflows/Solidity/badge.svg)
 
 This repository includes a sample to:
 1. Deploy a contract with FHE operations
