@@ -9,14 +9,31 @@ This repository includes a sample to:
 You can deploy and interact with contracts via our testnet or install a single-node network on your dev machine to test locally.
 ### Using The Test Network
 The test network is deployed and available at: https://rpc.sunscreen.tech/parasol with Chain ID 574.
-### Using Anvil for Local Network
-1. `git clone https://github.com/Sunscreen-tech/foundry`
-2. Go to `foundry/crates`
-3. Execute `cargo install --path ./anvil --bins --locked --force`
-4. Execute `anvil`
-5. Your network is ready! You will have 10 accounts and 10 private keys available for use.
-6. If you didn't change any defaults, your network should be available at http://127.0.0.1:8545 with Chain ID 31337.
-7. You are done!
+### Using `Anvil` as a local testnet
+First, you'll need `cargo`; if you don't have it, the easiest way is to install via `rustup`:
+
+```sh
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+```
+
+Then you can install our foundry fork:
+
+```sh
+cargo install --git https://github.com/Sunscreen-tech/foundry --profile local forge cast anvil
+```
+
+For more info on foundry, see the official
+[docs](https://book.getfoundry.sh/).
+
+To start your a local testnet:
+
+```sh
+anvil
+```
+
+Your network is ready! You will have 10 accounts and 10 private keys available for use. If you didn't change any defaults, your network should be available at http://127.0.0.1:8545 with Chain ID 31337.
+
+***RW: Need a section on how to run tests***
 
 ## Deploying A Contract
 The deployment code exists in the `voting-demo-contracts` folder. <br/>
