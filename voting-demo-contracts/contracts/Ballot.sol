@@ -2,7 +2,7 @@
 
 pragma solidity >=0.7.0 <0.9.0;
 
-import "./libs/FHE.sol";
+import "sunscreen/src/FHE.sol";
 
 /**
  * @title Ballot
@@ -29,6 +29,7 @@ contract Ballot {
 
     bytes private publicKey;
     string private ballotName;
+    FHE fhe;
 
     /**
      * @dev Create a new ballot to choose one of 'proposalNames'.
@@ -37,14 +38,14 @@ contract Ballot {
     constructor(string memory ballot, string[] memory proposalNames) {
         chairperson = msg.sender;
         voters[chairperson].weight = 1;
-        publicKey = FHE.networkPublicKey();
+        publicKey = fhe.networkPublicKey();
         ballotName = ballot;
 
         for (uint i = 0; i < proposalNames.length; i++) {
             proposals.push(
                 Proposal({
                     name: proposalNames[i],
-                    voteCount: FHE.encryptUint256(0)
+                    voteCount: fhe.encryptUint256(0)
                 })
             );
         }
@@ -93,7 +94,7 @@ contract Ballot {
 
     function addWeightForVotes(Voter memory voter, uint256 weight) private {
         for (uint i = 0; i < proposals.length; i++) {
-            proposals[i].voteCount = FHE.multiplyUint256EncPlain(publicKey, voter.votes[i], weight);/* FHE.addUint256EncEnc(
+            proposals[i].voteCount = fhe.multiplyUint256EncPlain(publicKey, voter.votes[i], weight);/* FHE.addUint256EncEnc(
                 publicKey,
                 proposals[i].voteCount,
                 voter.votes[i]
@@ -138,7 +139,7 @@ contract Ballot {
         for (uint i = 0; i < proposals.length; i++) {
             reEncProposals[i] = Proposal({
                 name: proposals[i].name,
-                voteCount: FHE.reencryptUint256(
+                voteCount: fhe.reencryptUint256(
                     reencPublicKey,
                     proposals[i].voteCount
                 )

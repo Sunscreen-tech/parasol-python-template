@@ -33,7 +33,18 @@ anvil
 
 Your network is ready! You will have 10 accounts and 10 private keys available for use. If you didn't change any defaults, your network should be available at http://127.0.0.1:8545 with Chain ID 31337.
 
-***RW: Need a section on how to run tests***
+## Installing Solidity dependencies
+Forge uses submodules to manage dependencies. Initialize the dependencies:
+
+```bash
+forge install --root ./contracts
+```
+
+# Testing your contract
+To test your contract run:
+```sh
+forge test --root voting-demo-contracts/contracts
+```
 
 # Deploying A Contract
 The deployment code exists in the `voting-demo-contracts` folder. <br/>

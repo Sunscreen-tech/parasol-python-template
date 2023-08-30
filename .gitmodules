@@ -1,0 +1,6 @@
+[submodule "voting-demo-contracts/contracts/lib/forge-std"]
+	path = voting-demo-contracts/contracts/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std
+[submodule "voting-demo-contracts/contracts/lib/sunscreen-contracts"]
+	path = voting-demo-contracts/contracts/lib/sunscreen-contracts
+	url = https://github.com/Sunscreen-tech/contracts
