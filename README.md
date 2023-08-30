@@ -1,15 +1,15 @@
-## Intro
+# Intro
 
 This repository includes a sample to:
 1. Deploy a contract with FHE operations
 2. Interact with it as the contract owner (i.e. call owner only functions)
 3. Interact with it as a contract client (i.e. call functions as a user of the contract)
 
-## Getting Started
+# Getting Started
 You can deploy and interact with contracts via our testnet or install a single-node network on your dev machine to test locally.
-### Using The Test Network
+## Using The Test Network
 The test network is deployed and available at: https://rpc.sunscreen.tech/parasol with Chain ID 574.
-### Using `Anvil` as a local testnet
+## Using `Anvil` as a local testnet
 First, you'll need `cargo`; if you don't have it, the easiest way is to install via `rustup`:
 
 ```sh
@@ -35,17 +35,17 @@ Your network is ready! You will have 10 accounts and 10 private keys available f
 
 ***RW: Need a section on how to run tests***
 
-## Deploying A Contract
+# Deploying A Contract
 The deployment code exists in the `voting-demo-contracts` folder. <br/>
 The contract we will deploy exists under the 'contracts' directory. It contains the `Ballot.sol` contract, which is the one we are deploying. 2 libraries that help provide the FHE functionality are included under the `contracts/libs` directory. These are provided for completeness sake but you don't have to modify them.
 Once you have your contract written under the `contracts` directory, here are the steps to deploy them:
-##### To the test network
+## To the test network
 1. Install all requirements by invoking `pip install -r requirements.txt`
 2. Edit config.py updated to your contract information
 3. Execute `python execute.py testnet deploy`
 4. The prompt will request you to fund the account (with instructions on how)
 5. You are done!
-##### To Anvil (local network)
+## To Anvil (local network)
 1. Install all requirements by invoking `pip install -r requirements.txt`
 2. Edit config.py updated to your contract information
 3. Execute `python execute.py local set-account **Account Address** **Account Private Key**`
@@ -54,27 +54,27 @@ Once you have your contract written under the `contracts` directory, here are th
 6. You are done!
 
 
-## Interacting As Owner
-##### Adding a new person to allow voting
+# Interacting As Owner
+## Adding a new person to allow voting
 Execute `python execute.py <testnet/local> allow-account-to-vote **Path to ABI JSON (contract.json)**  **Account to allow to vote**`
-##### Getting Final Vote Tally
+## Getting Final Vote Tally
 Execute `python execute.py <testnet/local> get-results **Path to ABI JSON (contract.json)**`
 
 
-## Interacting as Client
+# Interacting as Client
 The CLI is configured under `voting-demo-client-cli/python`. <br/>
 Execute `pip install -r requirements.txt`
-#### Configuring your account (Only for Testnets)
+## Configuring your account (Only for Testnets)
 Execute `python client.py testnet create-account`
-#### Configuring your account (For Anvil)
+## Configuring your account (For Anvil)
 Execute `python client.py local set-account **Account Address** **Account Private Key**`
 
 
-#### Configuring the ABI
+# Configuring the ABI
 Copy over the `contract.json` from the contract folder into this folder
 
-##### To Vote
+# To Vote
 Execute `python client.py <testnet/local> vote  **Path to ABI JSON (contract.json)**`
 
-##### To Delegate your vote
+# To Delegate your vote
 Execute `python client.py <testnet/local> delegate  **Path to ABI JSON (contract.json)** **Account to delegate to**`
