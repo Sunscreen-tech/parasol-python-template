@@ -54,37 +54,60 @@ forge test --root voting-demo-contracts/contracts
 
 # Deploying A Contract
 The deployment code exists in the `voting-demo-contracts` folder. <br/>
-The contract we will deploy exists under the 'contracts' directory. It contains the `Ballot.sol` contract, which is the one we are deploying. 2 libraries that help provide the FHE functionality are included under the `contracts/libs` directory. These are provided for completeness sake but you don't have to modify them.
-Once you have your contract written under the `contracts` directory, here are the steps to deploy them:
-## To the test network
-2. Edit config.py updated to your contract information
-3. Execute `python execute.py testnet deploy`
-4. The prompt will request you to fund the account (with instructions on how)
-5. You are done!
-## To Anvil (local network)
-1. Edit config.py updated to your contract information
-2.
-Denote the account address and private key to which you want to deploy the smart contract (running `anvil` will print these out).
+The contract we will deploy exists under the 'contracts' directory. It contains the `Ballot.sol` contract, which is the one we are deploying. We suggest using this as a starting point to see how the process works before modifying it.
 
-Then run:
+## To Anvil (local network)
+### Get test account
+Simply run
 ```bash
-python execute.py --network local set-account --address **Account Address** --private_key **Account Private Key**
+anvil
+```
+and denote one of the account and private keys that get printed.
+
+### Deploy
+
+Then set up the deployment information:
+```bash
+python ./voting-demo-contracts/execute.py --network local set-account --address **Account Address** --private_key **Account Private Key**
 ```
 
-3. Run:
+Finally deploy your contract:
 ```bash
 python execute.py --network local deploy
 ```
-4. The prompt will request you to fund the account (with instructions on how)
-5. You are done!
+**RW: this step is broken**
 
+## To the test network
+### Create an account
+First, you'll need to create an account in your wallet. Then, Visit the [faucet](https://faucet.sunscreen.tech/) to fund it.
+
+Finally, denote your account's private key and address for deployment.
+
+### Deploy
+First, set the account:
+```bash
+python ./voting-demo-contracts/execute.py --network testnet set-account --address **Account Address** --private_key **Account Private Key**
+```
+
+Then, deploy:
+```bash
+python execute.py --network testnet deploy
+```
+
+**RW: this step is broken**
+
+If you haven't already funded your account, you'll be given a chance to do so, then hit enter.
 
 # Interacting As Owner
 ## Adding a new person to allow voting
-Execute `python execute.py <testnet/local> allow-account-to-vote **Path to ABI JSON (contract.json)**  **Account to allow to vote**`
-## Getting Final Vote Tally
-Execute `python execute.py <testnet/local> get-results **Path to ABI JSON (contract.json)**`
+```bash
+python execute.py <testnet/local> allow-account-to-vote **Path to ABI JSON (contract.json)**  **Account to allow to vote**
+```
 
+## Getting Final Vote Tally
+```bash
+python execute.py <testnet/local> get-results **Path to ABI JSON (contract.json)**
+```
 
 # Interacting as Client
 The CLI is configured under `voting-demo-client-cli/python`. <br/>
@@ -96,10 +119,16 @@ Execute `python client.py local set-account **Account Address** **Account Privat
 
 
 # Configuring the ABI
-Copy over the `contract.json` from the contract folder into this folder
+Copy over the `contract.json` from the `contracts` folder into this folder
+
+**RW: I don't think we need to do this anymore?**
 
 # To Vote
-Execute `python client.py <testnet/local> vote  **Path to ABI JSON (contract.json)**`
+```bash
+python client.py <testnet/local> vote  **Path to ABI JSON (contract.json)**
+```
 
 # To Delegate your vote
-Execute `python client.py <testnet/local> delegate  **Path to ABI JSON (contract.json)** **Account to delegate to**`
+```bash
+python client.py <testnet/local> delegate  **Path to ABI JSON (contract.json)** **Account to delegate to**
+```
