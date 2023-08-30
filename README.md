@@ -37,7 +37,13 @@ Your network is ready! You will have 10 accounts and 10 private keys available f
 Forge uses submodules to manage dependencies. Initialize the dependencies:
 
 ```bash
-forge install --root ./contracts
+forge install --root ./voting-demo-contracts/contracts
+```
+
+## Install Python dependencies
+```bash
+pip install -r ./voting-demo-contracts/requirements.txt
+pip install -r ./voting-demo-client-cli/requirements.txt
 ```
 
 # Testing your contract
@@ -51,18 +57,26 @@ The deployment code exists in the `voting-demo-contracts` folder. <br/>
 The contract we will deploy exists under the 'contracts' directory. It contains the `Ballot.sol` contract, which is the one we are deploying. 2 libraries that help provide the FHE functionality are included under the `contracts/libs` directory. These are provided for completeness sake but you don't have to modify them.
 Once you have your contract written under the `contracts` directory, here are the steps to deploy them:
 ## To the test network
-1. Install all requirements by invoking `pip install -r requirements.txt`
 2. Edit config.py updated to your contract information
 3. Execute `python execute.py testnet deploy`
 4. The prompt will request you to fund the account (with instructions on how)
 5. You are done!
 ## To Anvil (local network)
-1. Install all requirements by invoking `pip install -r requirements.txt`
-2. Edit config.py updated to your contract information
-3. Execute `python execute.py local set-account **Account Address** **Account Private Key**`
-4. Execute `python execute.py local deploy`
-5. The prompt will request you to fund the account (with instructions on how)
-6. You are done!
+1. Edit config.py updated to your contract information
+2.
+Denote the account address and private key to which you want to deploy the smart contract (running `anvil` will print these out).
+
+Then run:
+```bash
+python execute.py --network local set-account --address **Account Address** --private_key **Account Private Key**
+```
+
+3. Run:
+```bash
+python execute.py --network local deploy
+```
+4. The prompt will request you to fund the account (with instructions on how)
+5. You are done!
 
 
 # Interacting As Owner

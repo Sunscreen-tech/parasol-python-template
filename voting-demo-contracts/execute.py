@@ -34,7 +34,7 @@ def main(network):
     pass
 
 
-@main.command
+@main.command()
 @click.option("--address")
 @click.option("--private_key")
 def set_account(address, private_key):
