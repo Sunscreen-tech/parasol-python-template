@@ -23,7 +23,6 @@
     }
   },
   "build": { "dockerfile": "Dockerfile" },
-  "postCreateCommand": "chmod +x .devcontainer/postCreate.sh & .devcontainer/postCreate.sh",
-  "remoteUser": "root"
+  "postCreateCommand": ".devcontainer/postCreate.sh"
 }
 
