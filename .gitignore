@@ -1,0 +1,4 @@
+local_accounts.json
+*.key
+contract.json
+*/__pycache__/*
